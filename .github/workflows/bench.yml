@@ -1,0 +1,46 @@
+name: Benchmark
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  bench:
+    name: Bench ${{ matrix.name }}
+
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        tool: ['dripper']
+
+        name:
+          - 'DRipper'
+
+        include:
+          - { name: 'DRipper', repo: 'https://github.com/alexmon1989/russia_ddos' }
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: npm install
+
+
+
