@@ -57,7 +57,8 @@ jobs:
           echo "::endgroup::"
 
           sleep 65
-          curl --location http://localhost:8070/stop
+          curl -s --location http://localhost:8070/stats
+          curl -s --location http://localhost:8070/stop
 
 
 
