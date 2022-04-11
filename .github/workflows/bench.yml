@@ -53,7 +53,7 @@ jobs:
           curl -s --location http://localhost:5555 -I
 
           echo "::group::Run test attack..."
-          docker run -i --rm ${{ matrix.image }} -t 100 -s http://localhost:5555 -d 60
+          docker run -i --rm ${{ matrix.image }} -t 10 -s http://localhost:5555 -d 60 -c 0
           echo "::endgroup::"
 
           curl --location http://localhost:8070/stop
