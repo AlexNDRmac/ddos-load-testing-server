@@ -56,6 +56,7 @@ jobs:
           docker run -i --network="host" --rm ${{ matrix.image }} -t 10 -s http://localhost:5555 -d 60 -c 0
           echo "::endgroup::"
 
+          sleep 65
           curl --location http://localhost:8070/stop
 
 
