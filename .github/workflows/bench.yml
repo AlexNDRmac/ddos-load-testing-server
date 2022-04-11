@@ -46,6 +46,7 @@ jobs:
       - name: Start test server
         run: |
           node app -p 8070 &
+          sleep 5
           curl --location http://localhost:8070/start/http/5555
 
       - name: Run benchmark
