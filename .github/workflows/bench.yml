@@ -43,18 +43,16 @@ jobs:
         run: |
           npm install
 
-      - name: Start test server
+      - name: Run Benchmark
         run: |
           node app -p 8070 &
           sleep 5
-          curl --location http://localhost:8070/start/http/5555
+          curl -s --location http://localhost:8070/start/http/5555
 
-      - name: Run benchmark
-        run: |
+          echo "::group::Run test attack..."
           docker run -i --rm ${{ matrix.image }} -t 100 -s http://localhost:5555 -d 60
+          echo "::endgroup::"
 
-      - name: Get benchmark result
-        run: |
           curl --location http://localhost:8070/stop
 
 
