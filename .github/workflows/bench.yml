@@ -22,7 +22,7 @@ jobs:
           - 'DRipper'
 
         include:
-          - { name: 'DRipper', repo: 'https://github.com/alexmon1989/russia_ddos' }
+          - { name: 'DRipper', image: 'alexmon1989/dripper:latest' }
 
     steps:
       - uses: actions/checkout@v2
@@ -40,7 +40,22 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+
+      - name: Start test server
+        run: |
+          node app -p 8070 &
+          curl --location http://localhost:8070/start/http/5555
+
+      - name: Run benchmark
+        run: |
+          docker run -i --rm ${{ matrix.image }} -t 100 -s http://localhost:5555 -d 60
+
+      - name: Get benchmark result
+        run: |
+          curl --location http://localhost:8070/stop
+
 
 
 
